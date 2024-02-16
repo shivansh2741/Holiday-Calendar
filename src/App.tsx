@@ -4,7 +4,7 @@ import { generateDate, months } from "./util/calender";
 import cn from "./util/cn";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { FaMapMarkerAlt } from 'react-icons/fa';
-import { fetchHolidaysByCountryAndMonth, fetchHolidaysByCountryAndYear, fetchHolidaysByCountryAndDay } from './services/fetchHolidays'
+import { fetchHolidaysByCountryAndMonth} from './services/fetchHolidays'
 import countries from './util/countries'
 
 
@@ -35,16 +35,14 @@ export default function Calendar() {
 	const [selectDate, setSelectDate] = useState(currentDate);
 	const [selectedOption, setSelectedOption] = useState<'month' | 'year'>('month');
 	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const [selectedCountry, setSelectedCountry] = useState<Country>({ name: 'India', code: 'IN' });
+	const [selectedCountry, setSelectedCountry] = useState<Country>({ name: 'Ukraine', code: 'UA' });
 	const [holidays, setHolidays] = useState<Holiday[]>([]);
 
 	useEffect(() => {
 		const fetchHolidays = async () => {
 			const currentYear: string = (today.year()).toString();
-			const currentMonth = today.month();
-			// console.log(today.month(), today.year(), today.day());
-			const formattedMonth = getFormattedMonth(currentMonth);
-			const data: Holiday[] = await fetchHolidaysByCountryAndMonth(selectedCountry.code, '2020', formattedMonth);
+
+			const data: Holiday[] = await fetchHolidaysByCountryAndMonth(selectedCountry.code, currentYear);
 			
 			if(data.length !== 0){
 				setHolidays(data);
@@ -57,13 +55,6 @@ export default function Calendar() {
 	}, [selectedCountry])
 
 
-	function getFormattedMonth(month: number): string {
-		const monthIndex: number = month + 1;
-
-		const formattedMonth: string = monthIndex.toString().padStart(2, '0');
-
-		return formattedMonth;
-	}
 
 	const toggleMenu = () => {
 		setIsOpen((prev) => !prev);
@@ -82,13 +73,24 @@ export default function Calendar() {
 		toggleMenu();
 	};
 
-	const condition = holidays.some(holiday =>
-		holiday.date_month === getFormattedMonth(today.month()) &&
-		holiday.date_day === getFormattedDay(today.date())
-	);
+	const getFormattedDate = (date: number, month: number, year: number): string => {
+		const paddedMonth = (month + 1).toString().padStart(2, '0'); 
+		const paddedDate = date.toString().padStart(2, '0');
+		const formattedDate = `${year}-${paddedMonth}-${paddedDate}`;
+		return formattedDate;
+	};
 
-		console.log(condition)
+	const condition = (date: number, month: number, year: number) => {
+		const formattedDate = getFormattedDate(date, month, year);
+		
+		return holidays.some(holiday =>
+			holiday.date === formattedDate
+		);
+	};
+	
+
 	function getFormattedDay(day: number): string {
+		console.log(day.toString().padStart(2, '0'));
 		return day.toString().padStart(2, '0');
 	}
 
@@ -176,12 +178,13 @@ export default function Calendar() {
 								return (
 									<div
 										key={index}
-										className="p-2 text-center h-14 grid place-content-center text-sm border"
-									>
+										className="p-2 text-center h-14 grid place-content-center text-sm border"	
+										onClick={() => condition(date.date(),date.month(),date.year())}>
 										<h1
 											className={cn(
 												currentMonth ? "" : "text-gray-400",
-												today ? "bg-red-600 text-white" : (condition ? "h-10 w-10 rounded-full grid place-content-center hover:bg-black hover:text-white transition-all cursor-pointer select-none" : ""),
+												today ? "bg-red-600 text-white" : ( condition(date.date(),date.month(),date.year())? "rounded-full bg-blue-500 text-white h-10 w-10 grid place-content-center hover:bg-black hover:text-white transition-all cursor-pointer select-none"
+												: ""),
 												selectDate
 													.toDate()
 													.toDateString() ===
