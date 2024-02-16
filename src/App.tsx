@@ -13,6 +13,21 @@ interface Country {
     code: string;
 }
 
+interface Holiday {
+    name: string;
+    name_local?: string;
+    language?: string;
+    description?: string;
+    country: string;
+    location: string;
+    type: string;
+    date: string;
+    date_year: string;
+    date_month: string;
+    date_day: string;
+    week_day: string;
+}
+
 export default function Calendar() {
 	const days = ["S", "M", "T", "W", "T", "F", "S"];
 	const currentDate = dayjs();
@@ -21,11 +36,32 @@ export default function Calendar() {
 	const [selectedOption, setSelectedOption] = useState<'month' | 'year'>('month');
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [selectedCountry, setSelectedCountry] = useState<Country>({ name: 'India', code: 'IN' });
-	
+	const [holidays, setHolidays] = useState<Holiday[]>([]);
 	
 	useEffect(() => {
-		fetchHolidaysByCountryAndMonth(selectedCountry.code, '2020','01');
+		const fetchHolidays = async () => {
+			const currentYear: string = (today.year()).toString();
+			const currentMonth = today.month();
+
+			const formattedMonth = getFormattedMonth(currentMonth);
+			const data: Holiday[] = await fetchHolidaysByCountryAndMonth(selectedCountry.code, '2020', formattedMonth);
+                setHolidays(data);
+
+			console.log(data);
+		} 
+		
+
+		fetchHolidays();
 	},[selectedCountry])
+
+	function getFormattedMonth(month: number): string {
+		const monthIndex: number = month + 1;
+
+		const formattedMonth: string = monthIndex.toString().padStart(2, '0');
+	
+		return formattedMonth;
+	}
+
 	const toggleMenu = () => {
 		setIsOpen((prev) => !prev);
 	};
