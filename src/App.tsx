@@ -53,6 +53,7 @@ export default function Calendar() {
 
 		fetchHolidays();
 	},[selectedCountry])
+	
 
 	function getFormattedMonth(month: number): string {
 		const monthIndex: number = month + 1;
