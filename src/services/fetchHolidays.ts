@@ -39,8 +39,10 @@ export  async function fetchHolidaysByCountryAndMonth(countryCode : string, year
     })
     .catch(error => {
         console.log(error);
-        throw error; 
+        // throw error; 
+        return [];
     });
+    // return null;
 }
 
 export  async function fetchHolidaysByCountryAndDay(countryCode : string, year : string, month : string, day : string): Promise<Holiday[]> {

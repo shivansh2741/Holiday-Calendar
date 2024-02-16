@@ -4,28 +4,28 @@ import { generateDate, months } from "./util/calender";
 import cn from "./util/cn";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { FaMapMarkerAlt } from 'react-icons/fa';
-import {fetchHolidaysByCountryAndMonth, fetchHolidaysByCountryAndYear, fetchHolidaysByCountryAndDay} from './services/fetchHolidays'
+import { fetchHolidaysByCountryAndMonth, fetchHolidaysByCountryAndYear, fetchHolidaysByCountryAndDay } from './services/fetchHolidays'
 import countries from './util/countries'
 
 
 interface Country {
-    name: string;
-    code: string;
+	name: string;
+	code: string;
 }
 
 interface Holiday {
-    name: string;
-    name_local?: string;
-    language?: string;
-    description?: string;
-    country: string;
-    location: string;
-    type: string;
-    date: string;
-    date_year: string;
-    date_month: string;
-    date_day: string;
-    week_day: string;
+	name: string;
+	name_local?: string;
+	language?: string;
+	description?: string;
+	country: string;
+	location: string;
+	type: string;
+	date: string;
+	date_year: string;
+	date_month: string;
+	date_day: string;
+	week_day: string;
 }
 
 export default function Calendar() {
@@ -37,29 +37,31 @@ export default function Calendar() {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [selectedCountry, setSelectedCountry] = useState<Country>({ name: 'India', code: 'IN' });
 	const [holidays, setHolidays] = useState<Holiday[]>([]);
-	
+
 	useEffect(() => {
 		const fetchHolidays = async () => {
 			const currentYear: string = (today.year()).toString();
 			const currentMonth = today.month();
-
+			// console.log(today.month(), today.year(), today.day());
 			const formattedMonth = getFormattedMonth(currentMonth);
 			const data: Holiday[] = await fetchHolidaysByCountryAndMonth(selectedCountry.code, '2020', formattedMonth);
-                setHolidays(data);
+			
+			if(data.length !== 0){
+				setHolidays(data);
+				console.log(data);
+			}
+		}
 
-			console.log(data);
-		} 
-		
 
 		fetchHolidays();
-	},[selectedCountry])
-	
+	}, [selectedCountry])
+
 
 	function getFormattedMonth(month: number): string {
 		const monthIndex: number = month + 1;
 
 		const formattedMonth: string = monthIndex.toString().padStart(2, '0');
-	
+
 		return formattedMonth;
 	}
 
@@ -79,6 +81,17 @@ export default function Calendar() {
 		setSelectedCountry(country);
 		toggleMenu();
 	};
+
+	const condition = holidays.some(holiday =>
+		holiday.date_month === getFormattedMonth(today.month()) &&
+		holiday.date_day === getFormattedDay(today.date())
+	);
+
+		console.log(condition)
+	function getFormattedDay(day: number): string {
+		return day.toString().padStart(2, '0');
+	}
+
 	return (
 		<div className="flex gap-10 sm:divide-x justify-center sm:w-3/4 mx-auto h-screen items-center sm:flex-col flex-col">
 			<div>
@@ -168,9 +181,7 @@ export default function Calendar() {
 										<h1
 											className={cn(
 												currentMonth ? "" : "text-gray-400",
-												today
-													? "bg-red-600 text-white"
-													: "",
+												today ? "bg-red-600 text-white" : (condition ? "h-10 w-10 rounded-full grid place-content-center hover:bg-black hover:text-white transition-all cursor-pointer select-none" : ""),
 												selectDate
 													.toDate()
 													.toDateString() ===
@@ -191,9 +202,9 @@ export default function Calendar() {
 						)}
 					</div>
 				</div>}
-				{(selectedOption === 'year') && 
-					<div> this is where year goes </div>
-				}
+			{(selectedOption === 'year') &&
+				<div> this is where year goes </div>
+			}
 		</div>
 	);
 }
