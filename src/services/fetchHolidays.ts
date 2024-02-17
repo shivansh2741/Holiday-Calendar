@@ -22,11 +22,11 @@ export  async function fetchHolidaysByCountryAndMonth(countryCode : string, year
     return axios.get<Holiday[]>(`https://date.nager.at/api/v3/publicholidays/${year}/${countryCode}`)
     .then(response => {
         const nationalHolidays = response.data
-        console.log(nationalHolidays);
+        // console.log(nationalHolidays);
         return nationalHolidays;
     })
     .catch(error => {
-        console.log(error);
+        // console.log(error);
         return [];
     });
 }

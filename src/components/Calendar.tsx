@@ -90,7 +90,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedCountry, selectedOption, to
 
             if (data.length !== 0) {
                 setHolidays(data);
-                console.log(data);
+                // console.log(data);
             }
         }
 

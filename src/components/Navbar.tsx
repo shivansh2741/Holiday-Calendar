@@ -58,16 +58,16 @@ const Navbar: React.FC<NavbarProps> = (props) => {
                 </button>
                 {showMessage && (
                     <div className="absolute top-full left-1/2 transform -translate-x-1/2 bg-gray-100 text-gray-700 p-4 rounded-md shadow-md w-40 bg-opacity-90">
-                        <div className="flex flex-col items-center">
-                            <div className="flex items-center mb-2">
+                        <div className="flex flex-col">
+                            <div className="flex mb-2">
                                 <div className="w-4 h-4 rounded-full bg-red-500 mr-2"></div>
                                 <p className="text-sm">Today's Date</p>
                             </div>
-                            <div className="flex items-center mb-2">
+                            <div className="flex mb-2">
                                 <div className="w-4 h-4 rounded-full bg-blue-500 mr-2"></div>
                                 <p className="text-sm">Public Holiday</p>
                             </div>
-                            <div className="flex items-center">
+                            <div className="flex">
                                 <div className="w-4 h-4 rounded-full bg-black mr-2"></div>
                                 <p className="text-sm">Selected Date</p>
                             </div>

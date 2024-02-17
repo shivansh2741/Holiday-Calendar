@@ -34,7 +34,7 @@ const Menu: React.FC<MenuProps> = ({ countries, handleCountryClick, selectedCoun
                 return country.name.toLowerCase().startsWith(q.toLowerCase());
             })
         )
-        console.log(filteredCountries)
+        // console.log(filteredCountries)
     }
 
     useEffect(() => {

@@ -45,7 +45,7 @@ export default function App() {
 	};
 
 	const handleCountryClick = (country: Country) => {
-		console.log(country)
+		// console.log(country)
 		setSelectedCountry(country);
 		
 	};
@@ -58,7 +58,7 @@ export default function App() {
 		fetchAllCountries().then(
 			(data) => {
 				setCountries(data);
-				console.log(data);
+				// console.log(data);
 			}
 		)
 
