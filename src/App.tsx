@@ -70,7 +70,7 @@ export default function App() {
 	const months = Array.from({ length: 12 }, (_, index) => index + 1);
 	return (
 		<div className="flex justify-center items-center h-screen">
-			<div className="top-20 left-5 flex flex-col items-center">
+			<div className="flex flex-col items-center">
 
 				<div className="flex items-center mb-2">
 					<div className="w-4 h-4 rounded-full bg-red-500 mr-4"></div>
@@ -131,14 +131,11 @@ export default function App() {
 						<Calendar selectedCountry={selectedCountry} selectedOption={selectedOption} today={today} setToday={setToday} />
 					</div>}
 				{(selectedOption === 'year') &&
-					<div className="grid grid-cols-3 gap-4">
-						{months.
-						map((month, index) => {
-							// Calculate today value for the current month
-							console.log(index);
+					<div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+						{months.map((month, index) => {
+
 							const todayForMonth = dayjs().startOf('year').add(index, 'month');
-							console.log(todayForMonth);
-							console.log("hello");
+		
 							return (
 								<Calendar
 									key={month}
