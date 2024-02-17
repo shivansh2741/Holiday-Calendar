@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-const API_KEY: string = 'e2d94ccc7c5b4b558ac169d10eeb5751';
 interface Holiday {
     name: string;
     name_local?: string;
