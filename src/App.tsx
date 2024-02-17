@@ -69,7 +69,7 @@ export default function App() {
 	const months = Array.from({ length: 12 }, (_, index) => index + 1);
 	return (
 		<div className="flex justify-center items-center h-screen">
-			<div className="flex gap-10 justify-center h-screen items-center sm:flex-col flex-col m-10">
+			<div className="flex gap-10 justify-center h-screen items-center flex-col m-10">
 
 				<Navbar
 					selectedOption = {selectedOption}

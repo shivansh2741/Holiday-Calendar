@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { FaMapMarkerAlt } from 'react-icons/fa';
 
 interface Country {
@@ -13,8 +13,8 @@ interface MenuProps {
 }
 
 const Menu: React.FC<MenuProps> = ({ countries, handleCountryClick, selectedCountry }) => {
-    // console.log(countries)
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const menuRef = useRef<HTMLDivElement>(null);
     const toggleMenu = () => {
         setIsOpen((prev) => !prev);
     };
@@ -41,8 +41,21 @@ const Menu: React.FC<MenuProps> = ({ countries, handleCountryClick, selectedCoun
       setFilteredCountries(countries)
     }, [countries])
     
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+    
     return (
-        <div>
+        <div ref={menuRef}>
             <button  onClick={toggleMenu} className="px-4 py-2 bg-gray-200 border border-gray-300 rounded flex items-center">
                 <FaMapMarkerAlt className="mr-2 text-gray-500" />
                 {selectedCountry.name}
