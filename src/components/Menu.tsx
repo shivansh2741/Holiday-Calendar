@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaMapMarkerAlt } from 'react-icons/fa';
 
 interface Country {
@@ -13,19 +13,37 @@ interface MenuProps {
 }
 
 const Menu: React.FC<MenuProps> = ({ countries, handleCountryClick, selectedCountry }) => {
-
+    // console.log(countries)
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const toggleMenu = () => {
         setIsOpen((prev) => !prev);
     };
 
+    const [filteredCountries, setFilteredCountries] = useState<Country[]>(countries);
+
     const menuAction = (country: Country) => {
         handleCountryClick(country)
         toggleMenu();
+        setFilteredCountries(countries);
     }
+
+    
+    const onSearch = (q:string) => {
+        setFilteredCountries(
+            countries.filter((country) => {
+                return country.name.toLowerCase().startsWith(q.toLowerCase());
+            })
+        )
+        console.log(filteredCountries)
+    }
+
+    useEffect(() => {
+      setFilteredCountries(countries)
+    }, [countries])
+    
     return (
         <div>
-            <button onClick={toggleMenu} className="px-4 py-2 bg-gray-200 border border-gray-300 rounded flex items-center">
+            <button  onClick={toggleMenu} className="px-4 py-2 bg-gray-200 border border-gray-300 rounded flex items-center">
                 <FaMapMarkerAlt className="mr-2 text-gray-500" />
                 {selectedCountry.name}
             </button>
@@ -40,11 +58,17 @@ const Menu: React.FC<MenuProps> = ({ countries, handleCountryClick, selectedCoun
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                     </svg>
                                 </div>
-                                <input type="text" id="input-group-search" className="block w-full p-2 ps-10 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 " placeholder="Search" />
+                                <input
+                                    type="text"
+                                    id="input-group-search"
+                                    className="block w-full p-2 ps-10 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
+                                    placeholder="Search"
+                                    onChange={(event) => onSearch(event.target.value)}
+                                />
                             </div>
                         </div>
                         <ul className="h-48 px-3 pb-3 overflow-y-auto text-lg">
-                            {countries.map((country, index) => (
+                            {filteredCountries.map((country, index) => (
                                 <li
                                     key={index}
                                     onClick={() => menuAction(country)}
