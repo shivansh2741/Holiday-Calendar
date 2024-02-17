@@ -32,7 +32,8 @@ Check out the live application here: https://shiny-axolotl-57cf2b.netlify.app/
 - **Pixel Perfect UI**: The user interface is designed with attention to detail, ensuring a visually appealing and seamless experience.
 
 <br>
-## ⚙️ Dependencies
+
+## ⚙️  Dependencies
 
 - **Icons**: React Icons
 - **Date**: Dayjs
