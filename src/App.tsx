@@ -70,26 +70,27 @@ export default function App() {
 	return (
 		<div className="flex justify-center items-center h-screen">
 			<div className="flex gap-10 justify-center h-screen items-center sm:flex-col flex-col m-10">
-				<div>
-					<button
-						className={`mr-2 px-4 py-2 rounded ${selectedOption === 'month' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
-							}`}
-						onClick={handleSelectMonth}
-					>
-						Month
-					</button>
-					<button
-						className={`px-4 py-2 rounded ${selectedOption === 'year' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
-							}`}
-						onClick={handleSelectYear}
-					>
-						Year
-					</button>
-				</div>
-				<div className="flex items-center justify-between">
-					<div className="relative inline-block mr-4">
+				<div className="flex items-center justify-between w-full"> 
+					<div className=""> 
 						<button
-							className="bg-gray-500 text-white rounded-full w-8 h-8 flex items-center justify-center transition-colors duration-300 hover:bg-blue-700"
+							className={`mr-2 px-4 py-2 rounded ${selectedOption === 'month' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+							onClick={handleSelectMonth}
+						>
+							Month
+						</button>
+						<button
+							className={`px-4 py-2 rounded ${selectedOption === 'year' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+							onClick={handleSelectYear}
+						>
+							Year
+						</button>
+					</div>
+
+					<Menu countries={countries} handleCountryClick={handleCountryClick} selectedCountry={selectedCountry} />
+
+					<div className="relative inline-block">
+						<button
+							className="mr-10 bg-gray-500 text-white rounded-full w-8 h-8 flex items-center justify-center transition-colors duration-300 hover:bg-blue-700"
 							onMouseEnter={() => setShowMessage(true)}
 							onMouseLeave={() => setShowMessage(false)}
 						>
@@ -114,8 +115,6 @@ export default function App() {
 							</div>
 						)}
 					</div>
-
-					<Menu countries={countries} handleCountryClick={handleCountryClick} selectedCountry={selectedCountry}/>
 				</div>
 
 				{(selectedOption === 'month') &&
