@@ -12,7 +12,7 @@ Check out the live application here: https://shiny-axolotl-57cf2b.netlify.app/
 ## 🖊️ Features
 
 - **View Options**: Users can switch between month and year views using a button.
-- **Location Input**: The location can be changed by clicking on the input field. The default location is automatically detected.
+- **Searchbar**: The location can be changed by searching country in the searchbar.
 - **Public Holidays**: The app utilizes an open-source API to fetch public holidays for the selected location. Holidays are displayed in the calendar, and users can view holiday details by clicking on the holiday date.
 - **Responsive Design**: The web-app is fully responsive and adapts to different screen sizes.
 
