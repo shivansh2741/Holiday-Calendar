@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
-import { FaMapMarkerAlt } from 'react-icons/fa';
 import { fetchAllCountries } from "./services/fetchCountries";
 import Calendar from "./components/Calendar"
+import Menu from "./components/Menu";
 
 interface Country {
 	countryCode: string;
@@ -30,14 +30,11 @@ export default function App() {
 	const currentDate = dayjs();
 	const [today, setToday] = useState(currentDate);
 	const [selectedOption, setSelectedOption] = useState<'month' | 'year'>('month');
-	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [selectedCountry, setSelectedCountry] = useState<Country>({ countryCode: 'Select a country', name: 'Select a country' });
 	const [holidays, setHolidays] = useState<Holiday[]>([]);
 	const [countries, setCountries] = useState<Country[]>([]);
 
-	const toggleMenu = () => {
-		setIsOpen((prev) => !prev);
-	};
+
 
 	const handleSelectMonth = () => {
 		setSelectedOption('month');
@@ -48,8 +45,8 @@ export default function App() {
 	};
 
 	const handleCountryClick = (country: Country) => {
+		console.log(country)
 		setSelectedCountry(country);
-		toggleMenu();
 	};
 
 
@@ -118,28 +115,9 @@ export default function App() {
 						)}
 					</div>
 
-
-					<button onClick={toggleMenu} className="px-4 py-2 bg-gray-200 border border-gray-300 rounded flex items-center">
-						<FaMapMarkerAlt className="mr-2 text-gray-500" />
-						{selectedCountry.name}
-					</button>
+					<Menu countries={countries} handleCountryClick={handleCountryClick} selectedCountry={selectedCountry}/>
 				</div>
 
-
-				{isOpen &&
-					(
-						<ul className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white border border-gray-300 rounded shadow-md">
-							{countries.map((country, index) => (
-								<li
-									key={index}
-									onClick={() => handleCountryClick(country)}
-									className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-								>
-									{country.name}
-								</li>
-							))}
-						</ul>
-					)}
 				{(selectedOption === 'month') &&
 					<div className="max-w-100 max-h-100">
 						<Calendar selectedCountry={selectedCountry} selectedOption={selectedOption} today={today} setToday={setToday} />
