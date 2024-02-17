@@ -5,7 +5,7 @@
 
 This is a React-based web application built with Tailwind CSS and TypeScript that allows users to view public holidays based on location. The app features a responsive design and supports both month and year views for the calendar.
 
-Check out the live application here: ![HolidayCalendar](https://shiny-axolotl-57cf2b.netlify.app/)
+Check out the live application here:(https://shiny-axolotl-57cf2b.netlify.app/)
 
 <br>
 
