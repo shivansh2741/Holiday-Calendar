@@ -80,6 +80,6 @@ npm run start
 
 ## 🖼️ Screenshot
 ![Monthly view](https://github.com/shivansh2741/merkle-calendar/blob/main/assets/Monthly%20view.png)
+<br> 
 
-<br>
 ![Year view](https://github.com/shivansh2741/merkle-calendar/blob/main/assets/Yearly%20view.png)
