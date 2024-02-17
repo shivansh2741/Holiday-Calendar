@@ -5,8 +5,8 @@ import { fetchAllCountries } from "./services/fetchCountries";
 import Calendar from "./components/Calendar"
 
 interface Country {
-    countryCode: string;
-    name: string;
+	countryCode: string;
+	name: string;
 }
 
 interface Holiday {
@@ -24,13 +24,14 @@ interface Holiday {
 	week_day: string;
 }
 
+
 export default function App() {
-	
-    const currentDate = dayjs();
-	
+
+	const currentDate = dayjs();
+	const [today, setToday] = useState(currentDate);
 	const [selectedOption, setSelectedOption] = useState<'month' | 'year'>('month');
 	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const [selectedCountry, setSelectedCountry] = useState<Country>({ countryCode: 'Ukraine', name: 'UA' });
+	const [selectedCountry, setSelectedCountry] = useState<Country>({ countryCode: 'Select a country', name: 'Select a country' });
 	const [holidays, setHolidays] = useState<Holiday[]>([]);
 	const [countries, setCountries] = useState<Country[]>([]);
 
@@ -52,9 +53,9 @@ export default function App() {
 	};
 
 
-	
 
-	useEffect( () => {
+
+	useEffect(() => {
 
 		fetchAllCountries().then(
 			(data) => {
@@ -62,27 +63,27 @@ export default function App() {
 				console.log(data);
 			}
 		)
-		
-		
+
+
 
 	}, [])
-
+	const months = Array.from({ length: 12 }, (_, index) => index + 1);
 	return (
 		<div className="flex justify-center items-center h-screen">
-			<div className="flex flex-col items-center m-10">
-				
+			<div className="top-20 left-5 flex flex-col items-center">
+
 				<div className="flex items-center mb-2">
 					<div className="w-4 h-4 rounded-full bg-red-500 mr-4"></div>
 					<p className="text-base">Today's Date</p>
 				</div>
 
-				
+
 				<div className="flex items-center mb-2">
 					<div className="w-4 h-4 rounded-full bg-blue-500 mr-2"></div>
 					<p className="text-base">Public Holiday</p>
 				</div>
 
-				
+
 				<div className="flex items-center">
 					<div className="w-4 h-4 rounded-full bg-black mr-2"></div>
 					<p className="text-base">Selected Date</p>
@@ -126,11 +127,29 @@ export default function App() {
 						</ul>
 					)}
 				{(selectedOption === 'month') &&
-					<div className="max-w-[100rem] max-h-[50rem]">
-						<Calendar selectedCountry={selectedCountry}/>
+					<div className="max-w-100 max-h-100">
+						<Calendar selectedCountry={selectedCountry} selectedOption={selectedOption} today={today} setToday={setToday} />
 					</div>}
 				{(selectedOption === 'year') &&
-					<div> this is where year goes </div>
+					<div className="grid grid-cols-3 gap-4">
+						{months.
+						map((month, index) => {
+							// Calculate today value for the current month
+							console.log(index);
+							const todayForMonth = dayjs().startOf('year').add(index, 'month');
+							console.log(todayForMonth);
+							console.log("hello");
+							return (
+								<Calendar
+									key={month}
+									selectedCountry={selectedCountry}
+									selectedOption={selectedOption}
+									today={todayForMonth}
+									setToday={() => { }} 
+								/>
+							);
+						})}
+					</div>
 				}
 			</div>
 		</div>

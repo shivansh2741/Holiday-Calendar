@@ -25,11 +25,17 @@ interface Holiday {
 	week_day: string;
 }
 
+interface CalendarProps {
+    selectedCountry: Country;
+    selectedOption: string;
+    today: dayjs.Dayjs;
+    setToday: React.Dispatch<React.SetStateAction<dayjs.Dayjs>>;
+}
 
-export default function Calendar(props: { selectedCountry: Country; }) {
+
+const Calendar: React.FC<CalendarProps> = ({ selectedCountry, selectedOption, today, setToday }) => {
 	const days = ["S", "M", "T", "W", "T", "F", "S"];
     const currentDate = dayjs();
-    const [today, setToday] = useState(currentDate);
 	const [selectDate, setSelectDate] = useState(currentDate);
 	const [holidays, setHolidays] = useState<Holiday[]>([]);
 
@@ -80,7 +86,7 @@ export default function Calendar(props: { selectedCountry: Country; }) {
 		const fetchHolidays = async () => {
 			const currentYear: string = (today.year()).toString();
 
-			const data: Holiday[] = await fetchHolidaysByCountryAndMonth(props.selectedCountry.countryCode, currentYear);
+			const data: Holiday[] = await fetchHolidaysByCountryAndMonth(selectedCountry.countryCode, currentYear);
 			
 			if(data.length !== 0){
 				setHolidays(data);
@@ -90,7 +96,7 @@ export default function Calendar(props: { selectedCountry: Country; }) {
 
 
 		fetchHolidays();
-	}, [props.selectedCountry, today.year()])
+	}, [selectedCountry, today.year()])
 
 
     return (
@@ -99,7 +105,8 @@ export default function Calendar(props: { selectedCountry: Country; }) {
                 <h1 className="select-none font-semibold">
                     {months[today.month()]}, {today.year()}
                 </h1>
-                <div className="flex gap-10 items-center ">
+                {(selectedOption === 'month') &&
+                <div className="flex gap-10 items-center">
                     <GrFormPrevious
                         className="w-5 h-5 cursor-pointer hover:scale-105 transition-all"
                         onClick={() => {
@@ -120,7 +127,7 @@ export default function Calendar(props: { selectedCountry: Country; }) {
                             setToday(today.month(today.month() + 1));
                         }}
                     />
-                </div>
+                </div>}
             </div>
             <div className="grid grid-cols-7 ">
                 {days.map((day, index) => {
@@ -183,3 +190,6 @@ export default function Calendar(props: { selectedCountry: Country; }) {
         </div>
     )
 }
+
+
+export default Calendar;
