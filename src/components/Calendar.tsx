@@ -97,6 +97,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedCountry, selectedOption, to
 
 		fetchHolidays();
 	}, [selectedCountry, today.year()])
+    
 
 
     return (
