@@ -30,16 +30,16 @@ const Navbar: React.FC<NavbarProps> = (props) => {
 	const [showMessage, setShowMessage] = React.useState(false);
 
     return (
-        <div className="flex items-center justify-between w-full">
-            <div className="flex lg:flex-row md:flex-row sm:flex-col flex-col">
+        <div className="flex items-center justify-between w-full flex-wrap">
+            <div className="flex lg:flex-row md:flex-row sm:flex-row flex-row">
                 <button
-                    className={`mt-2 mr-2 px-4 py-2 w-24 rounded ${selectedOption === 'month' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+                    className={`mt-2 mr-2 px-4 py-2 w-24 text-sm rounded ${selectedOption === 'month' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
                     onClick={() => handleSelectMonth()}
                 >
                     Month
                 </button>
                 <button
-                    className={`mt-2 px-4 py-2 rounded w-24 ${selectedOption === 'year' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+                    className={`mt-2 px-4 py-2 rounded w-24 text-sm ${selectedOption === 'year' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
                     onClick={() => handleSelectYear()}
                 >
                     Year

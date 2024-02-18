@@ -55,7 +55,7 @@ const Menu: React.FC<MenuProps> = ({ countries, handleCountryClick, selectedCoun
     }, []);
     
     return (
-        <div ref={menuRef}>
+        <div ref={menuRef} className='mt-2'>
             <button  onClick={toggleMenu} className="lg:px-4 lg:py-2 md:px-4 md:py-2 sm:px-4 sm:py-2 py-2 px-4 bg-gray-200 border border-gray-300 rounded flex items-center">
                 <FaMapMarkerAlt className="mr-2 text-gray-500" />
                 {selectedCountry.name}
