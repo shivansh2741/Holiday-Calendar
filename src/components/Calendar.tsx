@@ -182,10 +182,12 @@ const Calendar: React.FC<CalendarProps> = ({ selectedCountry, selectedOption, to
                                 {date.date()}
                             </h1>
                             {(selectedOption === "month") && windowWidth >= 1024 && (
-                                <p style={{fontSize:'0.75rem'}}
-                                >
-                                    {fetchHolidayDetails(date.date(), date.month(), date.year())
-}                                </p>
+                                <p style={{ fontSize: '0.75rem' }}>
+                                {(() => {
+                                    const event = fetchHolidayDetails(date.date(), date.month(), date.year());
+                                    return event && event.length >= 20 ? `${event.slice(0, 20)}...` : event;
+                                })()}
+                            </p>
                             )}
                         </div>
                         {condition(date.date(), date.month(), date.year()) && popupVisible && hoveredDate === index && (
