@@ -28,7 +28,7 @@ Check out the live application here: https://shiny-axolotl-57cf2b.netlify.app/
 
 ## 🖊️ Bonus Features
 
-- **Testing**: Unit and integration testing are implemented to ensure the reliability of the application.
+- **Searching**: Enhancing user search experience with inclusive country filters for better navigation.
 - **Pixel Perfect UI**: The user interface is designed with attention to detail, ensuring a visually appealing and seamless experience.
 
 <br>
@@ -39,6 +39,7 @@ Check out the live application here: https://shiny-axolotl-57cf2b.netlify.app/
 - **Date**: Dayjs
 - **Deployment**: Netlify
 - **Version Control**: GitHub
+- **Open-Source API** : (https://date.nager.at/Api)
 
 <br>
 
