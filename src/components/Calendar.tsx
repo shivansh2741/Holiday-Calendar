@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { generateDate, months } from "../util/calender";
 import cn from "../util/cn";
 import { fetchHolidaysByCountryAndMonth } from '../services/fetchHolidays'
@@ -40,6 +40,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedCountry, selectedOption, to
     const [selectDate, setSelectDate] = useState(currentDate);
     const [holidays, setHolidays] = useState<Holiday[]>([]);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const outsideRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const handleResize = () => {
@@ -52,6 +53,20 @@ const Calendar: React.FC<CalendarProps> = ({ selectedCountry, selectedOption, to
             window.removeEventListener('resize', handleResize);
         };
     }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (outsideRef.current && !outsideRef.current.contains(event.target as Node)) {
+                setSelectDate(currentDate);
+            }
+        };
+
+        document.addEventListener('click', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [currentDate]);
 
     const handleMouseEnter = (index: number) => {
         const id = setTimeout(() => {
@@ -115,7 +130,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedCountry, selectedOption, to
 
 
     return (
-        <div className="mr-8 mr-8 mb-8">
+        <div ref={outsideRef} className="mr-8 mr-8 mb-8">
             <div className="flex justify-between items-center">
                 <h1 className="select-none font-semibold">
                     {months[today.month()]}, {today.year()}
