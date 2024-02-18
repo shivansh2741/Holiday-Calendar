@@ -3,12 +3,14 @@ import React, { useEffect, useState } from "react";
 import { fetchAllCountries } from "./services/fetchCountries";
 import Calendar from "./components/Calendar"
 import Navbar from "./components/Navbar";
+import { setDefaultResultOrder } from "dns";
+import { GrFormNext, GrFormPrevious } from "react-icons/gr";
+
 
 interface Country {
 	countryCode: string;
 	name: string;
 }
-
 
 export default function App() {
 
@@ -63,7 +65,27 @@ export default function App() {
 					selectedCountry = {selectedCountry}
 					handleCountryClick = {handleCountryClick}
 				/>
-
+				{(selectedOption === 'year') && <div className="flex gap-10 items-center lg:ml-auto">
+                    <GrFormPrevious
+                        className="w-5 h-5 cursor-pointer hover:scale-105 transition-all"
+                        onClick={() => {
+							setToday(today.year(today.year() - 1));                        }}
+                    />
+                    <h1
+                        className="cursor-pointer hover:scale-105 transition-all px-4 py-2 rounded border border-gray-300 bg-white hover:bg-gray-100"
+                        onClick={() => {
+                            setToday(currentDate);
+                        }}
+                    >
+                        Today
+                    </h1>
+                    <GrFormNext
+                        className="w-5 h-5 cursor-pointer hover:scale-105 transition-all"
+                        onClick={() => {
+							setToday(today.year(today.year() + 1));
+                        }}
+                    />
+                </div>}
 				{(selectedOption === 'month') &&
 					<div className="max-w-100 max-h-100">
 						<Calendar selectedCountry={selectedCountry} selectedOption={selectedOption} today={today} setToday={setToday} />
@@ -72,7 +94,7 @@ export default function App() {
 					<div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
 						{months.map((month, index) => {
 
-							const todayForMonth = dayjs().startOf('year').add(index, 'month');
+							const todayForMonth = today.startOf('year').add(index, 'month');
 
 							return (
 								<Calendar
@@ -80,7 +102,7 @@ export default function App() {
 									selectedCountry={selectedCountry}
 									selectedOption={selectedOption}
 									today={todayForMonth}
-									setToday={() => { }}
+									setToday={setToday}
 								/>
 							);
 						})}

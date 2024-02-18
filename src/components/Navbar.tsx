@@ -31,15 +31,15 @@ const Navbar: React.FC<NavbarProps> = (props) => {
 
     return (
         <div className="flex items-center justify-between w-full">
-            <div className="">
+            <div className="flex lg:flex-row md:flex-row sm:flex-col flex-col">
                 <button
-                    className={`mr-2 px-4 py-2 rounded ${selectedOption === 'month' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+                    className={`mt-2 mr-2 px-4 py-2 w-24 rounded ${selectedOption === 'month' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
                     onClick={() => handleSelectMonth()}
                 >
                     Month
                 </button>
                 <button
-                    className={`px-4 py-2 rounded ${selectedOption === 'year' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+                    className={`mt-2 px-4 py-2 rounded w-24 ${selectedOption === 'year' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
                     onClick={() => handleSelectYear()}
                 >
                     Year
@@ -48,7 +48,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
 
             <Menu countries={countries} handleCountryClick={handleCountryClick} selectedCountry={selectedCountry} />
 
-            <div className="relative inline-block">
+            <div className="relative inline-block hidden md:block">
                 <button
                     className="mr-10 bg-gray-500 text-white rounded-full w-8 h-8 flex items-center justify-center transition-colors duration-300 hover:bg-blue-700"
                     onMouseEnter={() => setShowMessage(true)}

@@ -2,8 +2,9 @@ import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { generateDate, months } from "../util/calender";
 import cn from "../util/cn";
-import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { fetchHolidaysByCountryAndMonth } from '../services/fetchHolidays'
+import { GrFormNext, GrFormPrevious } from "react-icons/gr";
+
 
 interface Country {
     countryCode: string;
@@ -38,6 +39,19 @@ const Calendar: React.FC<CalendarProps> = ({ selectedCountry, selectedOption, to
     const currentDate = dayjs();
     const [selectDate, setSelectDate] = useState(currentDate);
     const [holidays, setHolidays] = useState<Holiday[]>([]);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     const handleMouseEnter = (index: number) => {
         const id = setTimeout(() => {
@@ -106,35 +120,34 @@ const Calendar: React.FC<CalendarProps> = ({ selectedCountry, selectedOption, to
                 <h1 className="select-none font-semibold">
                     {months[today.month()]}, {today.year()}
                 </h1>
-                {(selectedOption === 'month') &&
-                    <div className="flex gap-10 items-center">
-                        <GrFormPrevious
-                            className="w-5 h-5 cursor-pointer hover:scale-105 transition-all"
-                            onClick={() => {
-                                setToday(today.month(today.month() - 1));
-                            }}
-                        />
-                        <h1
-                            className=" cursor-pointer hover:scale-105 transition-all"
-                            onClick={() => {
-                                setToday(currentDate);
-                            }}
-                        >
-                            Today
-                        </h1>
-                        <GrFormNext
-                            className="w-5 h-5 cursor-pointer hover:scale-105 transition-all"
-                            onClick={() => {
-                                setToday(today.month(today.month() + 1));
-                            }}
-                        />
-                    </div>}
+                {(selectedOption === 'month') && <div className="flex gap-10 items-center lg:ml-auto">
+                    <GrFormPrevious
+                        className="w-5 h-5 cursor-pointer hover:scale-105 transition-all"
+                        onClick={() => {
+                            setToday(today.month(today.month() - 1));
+                        }}
+                    />
+                    <h1
+                        className="cursor-pointer hover:scale-105 transition-all px-4 py-2 rounded border border-gray-300 bg-white hover:bg-gray-100"
+                        onClick={() => {
+                            setToday(currentDate);
+                        }}
+                    >
+                        Today
+                    </h1>
+                    <GrFormNext
+                        className="w-5 h-5 cursor-pointer hover:scale-105 transition-all"
+                        onClick={() => {
+                            setToday(today.month(today.month() + 1));
+                        }}
+                    />
+                </div>}
             </div>
             <div className="grid grid-cols-7">
                 {days.map((day, index) => (
                     <h1
                         key={index}
-                        className={`text-sm text-center h-16 ${selectedOption === "month" ? "sm:w-1/7 lg:w-40 md:w-24" : "w-1/7"
+                        className={`text-sm text-center h-16 ${selectedOption === "month" ? "sm:w-20 lg:w-40 md:w-24" : "w-1/7"
                             } grid place-content-center text-gray-500 select-none`}
                     >
                         {day}
@@ -150,23 +163,31 @@ const Calendar: React.FC<CalendarProps> = ({ selectedCountry, selectedOption, to
                         onMouseLeave={handleMouseLeave}
                         onClick={() => console.log(date)}
                     >
-                        <h1
-                            className={cn(
-                                currentMonth ? "" : "text-gray-400",
-                                today ? "bg-red-600 text-white" : condition(date.date(), date.month(), date.year())
-                                    ? "rounded-full bg-blue-500 text-white h-10 w-10 grid place-content-center hover:bg-black hover:text-white transition-all cursor-pointer select-none"
-                                    : "",
-                                selectDate.toDate().toDateString() === date.toDate().toDateString()
-                                    ? "bg-black text-white"
-                                    : "",
-                                "h-10 w-10 rounded-full grid place-content-center hover:bg-black hover:text-white transition-all cursor-pointer select-none"
+                        <div className="flex flex-col justify-between items-center">
+                            <h1
+                                className={cn(
+                                    currentMonth ? "" : "text-gray-400",
+                                    today ? "bg-red-600 text-white" : condition(date.date(), date.month(), date.year())
+                                        ? "rounded-full bg-blue-500 text-white h-10 w-10 grid place-content-center hover:bg-black hover:text-white transition-all cursor-pointer select-none"
+                                        : "",
+                                    selectDate.toDate().toDateString() === date.toDate().toDateString()
+                                        ? "bg-black text-white"
+                                        : "",
+                                    "lg:h-10 lg:w-10 md:h-10 md:w-10 sm:h-6 sm:w-6 w-6 h-6 rounded-full grid place-content-center hover:bg-black hover:text-white transition-all cursor-pointer select-none"
+                                )}
+                                onClick={() => {
+                                    setSelectDate(date);
+                                }}
+                            >
+                                {date.date()}
+                            </h1>
+                            {(selectedOption === "month") && windowWidth >= 1024 && (
+                                <p style={{fontSize:'0.75rem'}}
+                                >
+                                    {fetchHolidayDetails(date.date(), date.month(), date.year())
+}                                </p>
                             )}
-                            onClick={() => {
-                                setSelectDate(date);
-                            }}
-                        >
-                            {date.date()}
-                        </h1>
+                        </div>
                         {condition(date.date(), date.month(), date.year()) && popupVisible && hoveredDate === index && (
                             <div className="absolute mt-12 ml-4 bg-blue-500 text-white border border-gray-300 shadow-lg rounded-lg p-4" style={{ zIndex: 999 }}>
                                 <p>{fetchHolidayDetails(date.date(), date.month(), date.year())}</p>

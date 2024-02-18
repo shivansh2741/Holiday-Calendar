@@ -56,7 +56,7 @@ const Menu: React.FC<MenuProps> = ({ countries, handleCountryClick, selectedCoun
     
     return (
         <div ref={menuRef}>
-            <button  onClick={toggleMenu} className="px-4 py-2 bg-gray-200 border border-gray-300 rounded flex items-center">
+            <button  onClick={toggleMenu} className="lg:px-4 lg:py-2 md:px-4 md:py-2 sm:px-4 sm:py-2 py-2 px-4 bg-gray-200 border border-gray-300 rounded flex items-center">
                 <FaMapMarkerAlt className="mr-2 text-gray-500" />
                 {selectedCountry.name}
             </button>
@@ -68,7 +68,7 @@ const Menu: React.FC<MenuProps> = ({ countries, handleCountryClick, selectedCoun
                             <div className="relative">
                                 <div className="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
                                     <svg className="w-4 h-4 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                     </svg>
                                 </div>
                                 <input
